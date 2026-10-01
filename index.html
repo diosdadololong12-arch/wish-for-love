@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wish For Love 💗</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: radial-gradient(
+        circle at 50% 35%,
+        #8b245f,
+        #321038 55%,
+        #090510
+    );
+}
+
+.card {
+    width: min(92%, 430px);
+    padding: 38px 24px;
+    text-align: center;
+    border-radius: 30px;
+    background: #ffffff12;
+    border: 1px solid #ffffff30;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 25px 80px #0008;
+    position: relative;
+    z-index: 2;
+}
+
+.heart {
+    font-size: 65px;
+    animation: beat 1s infinite;
+}
+
+@keyframes beat {
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+h1 {
+    font-family: Georgia, serif;
+    font-size: 37px;
+    margin: 8px 0;
+}
+
+p {
+    line-height: 1.6;
+}
+
+.buttons {
+    position: relative;
+    height: 180px;
+    margin-top: 15px;
+}
+
+button {
+    border: 0;
+    border-radius: 999px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    transition: 0.3s;
+}
+
+#yes {
+    left: 50%;
+    top: 50%;
+    transform: translate(-110%, -50%);
+    padding: 15px 28px;
+    font-size: 18px;
+    background: linear-gradient(135deg, #ff4f9a, #ff176f);
+    box-shadow: 0 10px 30px #ff3c8a66;
+    z-index: 3;
+}
+
+#no {
+    left: 58%;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 14px 25px;
+    font-size: 17px;
+    background: #555c;
+    z-index: 4;
+}
+
+#success {
+    display: none;
+}
+
+#success h1 {
+    font-size: 40px;
+}
+
+.spark {
+    position: fixed;
+    bottom: -30px;
+    pointer-events: none;
+    animation: up 5s linear forwards;
+}
+
+@keyframes up {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="question">
+
+    <div class="heart">💗</div>
+
+    <h1>Wish For Love</h1>
+
+    <p>May tanong ako sa'yo... 🥺</p>
+
+    <p>
+        <b>Will you be my forever kaduo? 🎮💞</b>
+    </p>
+
+    <div class="buttons" id="buttons">
+
+        <button id="yes" onclick="sayYes()">
+            YES 💗
+        </button>
+
+        <button id="no" onclick="sayNo()">
+            NO 😭
+        </button>
+
+    </div>
+
+    <p style="font-size:12px;opacity:.55">
+        Pindutin mo ang NO kung kaya mo... 👀
+    </p>
+
+</div>
+
+
+<div class="card" id="success">
+
+    <div class="heart">💖</div>
+
+    <h1>YEEEES! 🥹💗</h1>
+
+    <p>
+        <b>Forever kaduo na tayo! 🎮💕</b>
+    </p>
+
+    <p>
+        Wala nang atrasan. 😤💗
+    </p>
+
+</div>
+
+
+<script>
+
+let clicks = 0;
+
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+const box = document.getElementById("buttons");
+
+
+function sayNo() {
+
+    clicks++;
+
+    /* YES gets bigger every time NO is pressed */
+
+    const scale = 1 + clicks * 0.32;
+
+    yes.style.transform =
+        `translate(-50%, -50%) scale(${scale})`;
+
+    yes.style.left = "50%";
+    yes.style.top = "50%";
+
+
+    /*
+       After several NO clicks,
+       YES becomes huge and NO disappears.
+    */
+
+    if (clicks >= 7) {
+
+        no.style.opacity = "0";
+
+        no.style.pointerEvents = "none";
+
+        no.style.transform = "scale(0)";
+
+        return;
+    }
+
+
+    /* NO runs somewhere else */
+
+    const maxX =
+        box.clientWidth - no.offsetWidth - 5;
+
+    const maxY =
+        box.clientHeight - no.offsetHeight - 5;
+
+
+    no.style.left =
+        (5 + Math.random() * Math.max(1, maxX - 10))
+        + "px";
+
+    no.style.top =
+        (5 + Math.random() * Math.max(1, maxY - 10))
+        + "px";
+
+    no.style.transform = "none";
+
+
+    /* Change NO message */
+
+    const messages = [
+        "NO 😭",
+        "Sure ka? 🥺",
+        "Halaaa 😭",
+        "Pleaseee 💗",
+        "Ayaw talaga? 😭",
+        "YES na! 🥹",
+        "Last chance 😈"
+    ];
+
+    no.textContent =
+        messages[clicks - 1];
+}
+
+
+function sayYes() {
+
+    document.getElementById("question").style.display =
+        "none";
+
+    document.getElementById("success").style.display =
+        "block";
+
+
+    /* Falling hearts */
+
+    for (let i = 0; i < 45; i++) {
+
+        const s = document.createElement("div");
+
+        s.className = "spark";
+
+        s.textContent =
+            ["💗","💖","💕","✨","🌸","🎮"]
+            [Math.floor(Math.random() * 6)];
+
+        s.style.left =
+            Math.random() * 100 + "%";
+
+        s.style.animationDelay =
+            Math.random() * 2 + "s";
+
+        s.style.fontSize =
+            (16 + Math.random() * 22) + "px";
+
+        document.body.appendChild(s);
+
+        setTimeout(() => s.remove(), 6000);
+    }
+}
+
+</script>
+
+</body>
+  </html>
